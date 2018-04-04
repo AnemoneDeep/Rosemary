@@ -3,18 +3,22 @@ const pluck = require('./pluck')
 const api = require('./api')
 const path = require('path')
 
+
+
 let {lowDB: dbPath} = require('../../../config')
 
 class hitokoto {
 	constructor() {
-		this.optins = {
-			dbPath: path.resolve(__dirname, dbPath.path + "/hitokoto/")
+		this.options = {
+			dbPath: path.resolve(__dirname, dbPath.path + "/hitokoto/hitokoto.json")
 		}
 		this.status = {
 			init: false,
 			pluck: false
 		}
-		this.pluck = pluck
+		this.pluck = function (cmd,options) {
+			return new pluck(cmd,options,this)
+		}
 		this.monitor = monitor
 		this.init()
 		// console.log('constructor', this)
@@ -22,13 +26,20 @@ class hitokoto {
 	
 	init() {
 		// this.status.init = true
-		this.monitor.init(this.optins)
+		this.monitor.init(this.options)
 	}
 }
 
 
 let Hitokoto = new hitokoto
 
-// commed run gather
+/**
+ * imitate call Hitokoto
+ *
+ */
 Hitokoto.pluck('gather')
+
+// console.log(Hitokoto.pluck('state'), '----')
 // call crab fn
+
+
