@@ -14,9 +14,15 @@ let hitokotoDB = null
 
 class getAPI extends Crab {
 	parse(res) { //get complete requst infomation add second argument
-		console.log(this)
 		let mode = this.options.mode;
 		if (!this[mode]) return console.log('don\'t have mach method');
+		switch (res) {
+			case 'letGo':
+				
+				return
+				break
+		}
+		
 		if (typeof res == 'object') {
 			// if object not need parse it
 			console.log('res is object');
@@ -88,21 +94,28 @@ class getAPI extends Crab {
 		return onePiece
 	}
 	
-	OnlyTxt(res) {
-	
+	addItem(res) {
+		let {hitokoto, catname, source} = res
+		this.storeMethod({hitokoto, catname, source})
 	}
 	
 	storeMethod(res) {
 		let MD5 = md5(res.hitokoto);
-		// check ==> save it
+		let result = {
+			mgs: ''
+		}
 		console.log('check ==> save it', res)
 		let existMD5 = hitokotoDB.get('hitokoto.' + MD5).value();
-		
 		if (existMD5) {
+			result.mgs = 'item data is alread exist => pass'
 			console.log('item data is alread exist => pass')
 		} else {
 			db.set('hitokoto.' + MD5, res).write();
+			result.mgs = 'insert item,MD5 is: ' + MD5
 			console.log('insert item,MD5 is: ', MD5)
+		}
+		if (res.callback) {
+			callback(result)
 		}
 	}
 }
@@ -138,6 +151,13 @@ class pluck {
 				url: 'https://sslapi.hitokoto.cn/?encode=json'
 			})
 		}
+	}
+	
+	addItem() {
+		new getAPI({
+			mode: 'addItem',
+			data: { }
+		})
 	}
 	
 	state() {

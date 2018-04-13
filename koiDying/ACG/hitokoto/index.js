@@ -30,16 +30,16 @@ class hitokoto {
 	}
 }
 
-
 let Hitokoto = new hitokoto
-
 /**
  * imitate call Hitokoto
  *
  */
+// start Task : crab info
 Hitokoto.pluck('gather')
 
+// not yet
+// Hitokoto.pluck('addItem',{})
 // console.log(Hitokoto.pluck('state'), '----')
 // call crab fn
-
-
+// 
